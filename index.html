@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>小班课物料需求管理系统</title>
+    <title>小班课物料需求管理系统 (已修复)</title>
     <style>
         * {
             margin: 0;
@@ -19,14 +19,13 @@
             max-width: 1600px;
             margin: 0 auto;
         }
-        /* 头部 */
         .header {
             background: linear-gradient(135deg, #1a3c34 0%, #0f2c25 100%);
             color: white;
             padding: 2rem;
             border-radius: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 8px 20px rgba(0,0,0.08);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
         .header h1 {
             font-size: 2rem;
@@ -41,7 +40,6 @@
             opacity: 0.85;
             font-size: 0.95rem;
         }
-        /* 统计卡片 */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -52,9 +50,8 @@
             background: white;
             border-radius: 1.5rem;
             padding: 1.2rem 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             border: 1px solid #e9edf2;
-            transition: all 0.2s;
         }
         .stat-number {
             font-size: 2.2rem;
@@ -74,13 +71,12 @@
         .stat-card.overdue .stat-number {
             color: #dc2626;
         }
-        /* 数据分析卡片 */
         .analysis-card {
             background: white;
             border-radius: 1.5rem;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             border: 1px solid #eef2f6;
         }
         .analysis-card h3 {
@@ -111,7 +107,6 @@
             color: white;
             border-color: #1e4a3b;
         }
-        /* 三列图表布局 */
         .chart-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -121,7 +116,7 @@
         @media (max-width: 1200px) {
             .chart-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        @media (max: 768px) {
+        @media (max-width: 768px) {
             .chart-grid { grid-template-columns: 1fr; }
         }
         .chart-box {
@@ -147,14 +142,13 @@
             margin-top: 1rem;
             white-space: pre-line;
         }
-        /* 双栏布局 */
         .two-col {
             display: grid;
             grid-template-columns: 1fr 1.5fr;
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        @media (max: 780px) {
+        @media (max-width: 780px) {
             .two-col { grid-template-columns: 1fr; }
             body { padding: 1rem; }
         }
@@ -162,7 +156,7 @@
             background: white;
             border-radius: 1.5rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             border: 1px solid #eef2f6;
         }
         .card h3 {
@@ -222,7 +216,6 @@
             border-left: 4px solid #1e4a3b;
             word-break: break-word;
         }
-        /* 筛选栏 */
         .filter-bar {
             display: flex;
             gap: 0.8rem;
@@ -242,7 +235,6 @@
         .filter-input-date {
             min-width: 140px;
         }
-        /* 任务列表 */
         .task-item {
             background: #fefefe;
             border-bottom: 1px solid #edf2f7;
@@ -252,7 +244,6 @@
             align-items: center;
             gap: 0.8rem;
             flex-wrap: wrap;
-            transition: opacity 0.3s;
             cursor: pointer;
         }
         .task-item:hover {
@@ -365,7 +356,6 @@
             color: #64748b;
             margin-top: 0.3rem;
         }
-        /* 图片预览 */
         .img-preview {
             max-width: 100%;
             max-height: 240px;
@@ -373,14 +363,13 @@
             border: 1px solid #ddd;
             margin-top: 0.5rem;
         }
-        /* 弹窗 */
         .modal-mask {
             position:fixed;
             top:0;
             left:0;
             width:100vw;
             height:100vh;
-            background:rgba(0,0,0.5);
+            background:rgba(0,0,0,0.5);
             display:flex;
             align-items:center;
             justify-content:center;
@@ -433,7 +422,7 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>📚 小班课物料需求管理系统</h1>
+        <h1>📚 小班课物料需求管理系统 (已修复)</h1>
         <div class="sub">🧩 课件/手册/真题/宣传物料全流程需求管理、时间区间筛选、图片附件支持</div>
     </div>
 
@@ -446,7 +435,7 @@
         <div class="analysis-tab-bar">
             <div class="analysis-tab active" data-type="all">全部需求</div>
             <div class="analysis-tab" data-type="done">仅已完成</div>
-            <div class="analysis-tab" data-type="pending">仅进行中</div>
+            <div class="analysis-tab" data-type="pending">仅进行中/待处理</div>
         </div>
         <div class="chart-grid">
             <div class="chart-box">
@@ -466,7 +455,7 @@
     </div>
 
     <div class="two-col">
-        <!-- 左侧：需求录入 & 批量导入 -->
+        <!-- 左侧：需求录入 & 批量导入导出 -->
         <div class="card">
             <h3>✍️ 需求录入 / 批量导入导出</h3>
             <div class="form-group">
@@ -511,7 +500,6 @@
                 <label>期望完成时间</label>
                 <input type="date" id="taskExpectDate">
             </div>
-            <!-- 新增图片上传 -->
             <div class="form-group">
                 <label>上传截图/详细配图</label>
                 <input type="file" id="imgUpload" accept="image/*">
@@ -530,7 +518,7 @@
                     <option value="append">追加数据（保留原有，仅新增不重复项）</option>
                     <option value="replace">覆盖重复项（更新旧数据）</option>
                 </select>
-                <div class="mode-tip">规则：以【课标+课程+类型+描述】判定重复；表格仅导入文本，图片需手动编辑添加</div>
+                <div class="mode-tip">规则：以【课标+课程+类型+描述】判定重复</div>
             </div>
 
             <div class="batch-btn-group">
@@ -538,7 +526,7 @@
                 <button id="exportCSVBtn">💾 全量CSV备份</button>
             </div>
             <div class="form-group" style="margin-top:0.6rem;">
-                <label>上传CSV/Excel文件（仅导入文本）</label>
+                <label>上传CSV/Excel文件</label>
                 <input type="file" id="fileUpload" accept=".csv,.xlsx,.xls" style="padding:0.5rem;">
                 <button id="uploadFile">📤 解析文件</button>
             </div>
@@ -549,9 +537,9 @@
             <h3>📋 物料修改需求全流程追踪</h3>
             <div class="filter-bar">
                 <input class="filter-input-key" type="text" id="searchInput" placeholder="关键词搜索">
-                <input class="filter-input-date" id="dateStart" placeholder="开始日期">
+                <input class="filter-input-date" type="date" id="dateStart" placeholder="开始日期">
                 <span style="color:#64748b;">至</span>
-                <input class="filter-input-date" id="dateEnd" placeholder="结束日期">
+                <input class="filter-input-date" type="date" id="dateEnd" placeholder="结束日期">
                 <select id="filterCourse" class="filter-select">
                     <option value="all">全部课程</option>
                     <option value="PU1">PU1</option>
@@ -584,7 +572,7 @@
             </div>
             <div id="taskListContainer"></div>
             <div class="footer-note" style="margin-top: 1rem; border: none; padding: 0;">
-                💡 表格仅导入文本，图片可逐条编辑手动添加
+                💡 支持关键词+时间+多条件筛选，可上传截图描述需求，列表可查看/编辑
             </div>
         </div>
     </div>
@@ -686,15 +674,15 @@
     </div>
 
 <script>
-// 初始数据
+// ======================== 初始数据 ========================
 const defaultTasks = [
-    { id: 1, code: "YLE1-L1-U9-LC1", course: "PU1", type: "课件", desc: "将课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
-    { id: 2, code: "YLE2-L1-U9-LC1", course: "PU2", type: "课件", desc: "将课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
-    { id: 3, code: "YLE2-L2-U9-LC1", course: "PU3", type: "课件", desc: "将课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
-    { id: 4, code: "GLPET-L1-U12-LC1", course: "PET", type: "课件", desc: "将老版PET课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
-    { id: 5, code: "FCET4-L1-U10-LC1", course: "FCE", type: "学习手册", desc: "U10~U12共9节课完形填空增加答案", person: "武薇", date: "2026-03-10", expectDate: "", status: "已完成", img: "" },
-    { id: 6, code: "FCET4-L1-U10-LC1", course: "FCE", type: "课件", desc: "P48添加FCE口语模考视频", person: "武薇", date: "2026-03-10", expectDate: "", status: "已完成", img: "" },
-    { id: 7, code: "THKET-L1-U8-LC1", course: "KET", type: "课件", desc: "复制一模通知页面至作业列表后", person: "Ceci", date: "2026-04-12", expectDate: "", status: "进行中", img: "" },
+    { id: 1, code: "YLE1-L1-U9-LC1-1", course: "PU1", type: "课件", desc: "将课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
+    { id: 2, code: "YLE2-L1-U9-LC1-1", course: "PU2", type: "课件", desc: "将课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
+    { id: 3, code: "YLE2-L2-U9-LC1-1", course: "PU3", type: "课件", desc: "将课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
+    { id: 4, code: "GLPET-L1-U12-LC1-2", course: "PET", type: "课件", desc: "将老版PET课件模考说明进行更改", person: "心静", date: "2026-03-09", expectDate: "", status: "已完成", img: "" },
+    { id: 5, code: "FCET4-L1-U10-LC1-1", course: "FCE", type: "学习手册", desc: "U10~U12共9节课完形填空增加答案", person: "武薇", date: "2026-03-10", expectDate: "", status: "已完成", img: "" },
+    { id: 6, code: "FCET4-L1-U10-LC1-1", course: "FCE", type: "课件", desc: "P48添加FCE口语模考视频", person: "武薇", date: "2026-03-10", expectDate: "", status: "已完成", img: "" },
+    { id: 7, code: "THKET-L1-U8-LC1-1", course: "KET", type: "课件", desc: "复制一模通知页面至作业列表后", person: "Ceci", date: "2026-04-12", expectDate: "", status: "进行中", img: "" },
     { id: 8, code: "ALL", course: "PU1", type: "课件", desc: "新增新版语法视频", person: "Marina", date: "2026-04-12", expectDate: "", status: "待处理", img: "" },
     { id: 9, code: "TEST001", course: "PET", type: "真题添加", desc: "听力真题补充", person: "Ceci", date: "2026-05-15", expectDate: "", status: "待处理", img: "" }
 ];
@@ -725,16 +713,16 @@ let tempBase64Img = "";
 let editTempImg = "";
 
 // 本地存储
-function saveLocal(){
+function saveLocal() {
     localStorage.setItem("taskList", JSON.stringify(tasks));
 }
 
-// 生成联合唯一键（去重）
+// 生成联合唯一键（去重用）
 function getUniqueKey(item) {
     return `${item.code.trim()}|${item.course}|${item.type}|${item.desc.trim()}`;
 }
 
-// 批量导入数据处理（表格仅导入文本，图片字段置空）
+// 批量导入数据处理（修复：为新任务生成唯一ID）
 function handleImportData(importList) {
     const mode = document.getElementById("importMode").value;
     const existKeys = new Set(tasks.map(item => getUniqueKey(item)));
@@ -742,11 +730,17 @@ function handleImportData(importList) {
     let repeatCount = 0;
     const validList = importList.filter(item => item.course && item.type && item.desc.trim());
 
+    // 计算当前最大ID
+    let maxId = tasks.length ? Math.max(...tasks.map(t => t.id)) : 0;
+
     if (mode === "append") {
         validList.forEach(item => {
             const key = getUniqueKey(item);
-            if (!existKeys.has(key)) newData.push(item);
-            else repeatCount++;
+            if (!existKeys.has(key)) {
+                maxId++;
+                item.id = maxId;
+                newData.push(item);
+            } else repeatCount++;
         });
         tasks = [...tasks, ...newData];
     } else {
@@ -756,13 +750,17 @@ function handleImportData(importList) {
             if (isRepeat) repeatCount++;
             return !isRepeat;
         });
+        validList.forEach(item => {
+            maxId++;
+            item.id = maxId;
+        });
         tasks = [...finalOld, ...validList];
     }
     return { add: newData.length, repeat: repeatCount };
 }
 
 // 全局统一刷新
-function refreshAll(){
+function refreshAll() {
     updateStats();
     renderTasks();
     renderCharts();
@@ -777,7 +775,7 @@ function updateStats() {
     const doneCount = tasks.filter(t => t.status === "已完成").length;
     const pendingCount = tasks.filter(t => t.status !== "已完成").length;
     const rate = total === 0 ? 0 : Math.round((doneCount / total) * 100);
-    const overdueCount = tasks.filter(t => t.status !== "已完成" && t.expectDate && new Date(t.expectDate) < new Date(today));
+    const overdueCount = tasks.filter(t => t.status !== "已完成" && t.expectDate && new Date(t.expectDate) < new Date(today)).length;
 
     const statsHtml = `
         <div class="stat-card"><div class="stat-number">${total}</div><div class="stat-label">总需求</div></div>
@@ -805,7 +803,7 @@ function getFilteredTaskList() {
     // 关键词
     if(searchKey.trim() !== ""){
         const key = searchKey.toLowerCase();
-        list = list.filter(t=>
+        list = list.filter(t =>
             t.code.toLowerCase().includes(key) ||
             t.desc.toLowerCase().includes(key) ||
             t.person.toLowerCase().includes(key)
@@ -836,7 +834,7 @@ function renderTasks() {
         return;
     }
     let html = "";
-    list.forEach(task=>{
+    list.forEach(task => {
         const isOverdue = task.status !== "已完成" && task.expectDate && new Date(task.expectDate) < new Date(today);
         const overdueCls = isOverdue ? "overdue" : "";
         let statusCls = "status-btn";
@@ -844,10 +842,10 @@ function renderTasks() {
         html += `
         <div class="task-item ${overdueCls}" data-id="${task.id}">
             <div class="task-info">
-                <div class="task-title">${task.desc}</div>
+                <div class="task-title">${escapeHtml(task.desc)}</div>
                 <div class="task-meta">
                     <span class="task-category">${task.course} · ${task.type}</span>
-                    <span class="task-person">提需人：${task.person}</span>
+                    <span class="task-person">提需人：${escapeHtml(task.person)}</span>
                     <span class="task-date">${task.date || ""}</span>
                     ${task.img ? '<span style="font-size:0.7rem;color:#2563eb;">📷 含配图</span>' : ''}
                 </div>
@@ -864,61 +862,82 @@ function renderTasks() {
     container.innerHTML = html;
 
     // 状态切换
-    document.querySelectorAll('.status-btn:not(.detail-btn):not(.edit-btn):not(.del-btn)').forEach(btn=>{
-        btn.onclick = e=>{
+    document.querySelectorAll('.status-btn:not(.detail-btn):not(.edit-btn):not(.del-btn)').forEach(btn => {
+        btn.onclick = e => {
+            e.stopPropagation();
             const id = Number(e.target.dataset.id);
-            const t = tasks.find(x=>x.id === id);
+            const t = tasks.find(x => x.id === id);
+            if(!t) return;
             const arr = ["待处理","进行中","已完成"];
             const idx = arr.indexOf(t.status);
             t.status = arr[(idx+1)%3];
             refreshAll();
-        }
+        };
     });
     // 删除
-    document.querySelectorAll('.del-btn').forEach(btn=>{
-        btn.onclick = e=>{
+    document.querySelectorAll('.del-btn').forEach(btn => {
+        btn.onclick = e => {
+            e.stopPropagation();
             const id = Number(e.target.dataset.delid);
             if(confirm("确定删除该需求？")){
-                tasks = tasks.filter(x=>x.id !== id);
+                tasks = tasks.filter(x => x.id !== id);
                 refreshAll();
             }
-        }
+        };
     });
     // 详情、编辑
-    document.querySelectorAll('.detail-btn').forEach(btn=>{
-        btn.onclick = e=> openDetail(Number(e.target.dataset.did));
+    document.querySelectorAll('.detail-btn').forEach(btn => {
+        btn.onclick = e => {
+            e.stopPropagation();
+            openDetail(Number(e.target.dataset.did));
+        };
     });
-    document.querySelectorAll('.edit-btn').forEach(btn=>{
-        btn.onclick = e=> openEdit(Number(e.target.dataset.eid));
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.onclick = e => {
+            e.stopPropagation();
+            openEdit(Number(e.target.dataset.eid));
+        };
     });
-    document.querySelectorAll('.task-item').forEach(item=>{
-        item.onclick = e=>{
+    document.querySelectorAll('.task-item').forEach(item => {
+        item.onclick = e => {
             if(e.target.tagName === "BUTTON") return;
             openDetail(Number(item.dataset.id));
-        }
+        };
     });
 }
 
-// 渲染三张图表
-function renderCharts(){
+// 简单防XSS
+function escapeHtml(str) {
+    if(!str) return "";
+    return str.replace(/[&<>]/g, function(m) {
+        if(m === '&') return '&amp;';
+        if(m === '<') return '&lt;';
+        if(m === '>') return '&gt;';
+        return m;
+    });
+}
+
+// 渲染三张图表（修复 monthName 未定义）
+function renderCharts() {
     let chartData = [...tasks];
-    if(analysisFilterType === "done") chartData = tasks.filter(t=>t.status==="已完成");
-    if(analysisFilterType === "pending") chartData = tasks.filter(t=>t.status!=="已完成");
+    if(analysisFilterType === "done") chartData = tasks.filter(t => t.status === "已完成");
+    if(analysisFilterType === "pending") chartData = tasks.filter(t => t.status !== "已完成");
 
     // 课程级别柱状图
     const barCtx = document.getElementById("barChart").getContext("2d");
     const courseList = ["PU1","PU2","PU3","KET","PET","FCE"];
     const courseCount = {};
-    courseList.forEach(c=>courseCount[c] = 0);
-    chartData.forEach(t=>{ if(courseCount[t] !== undefined) courseCount[t]++; });
+    courseList.forEach(c => courseCount[c] = 0);
+    chartData.forEach(t => { if(courseCount[t.course] !== undefined) courseCount[t.course]++; });
 
-    barCtx.clearRect(0,0,400,280);
+    barCtx.clearRect(0, 0, 400, 280);
     const barW = 36, gap = 22, startX = 20, baseY = 230, maxH = 170;
     const color = "#1e4a3b";
-    courseList.forEach((c, idx)=>{
+    courseList.forEach((c, idx) => {
         const num = courseCount[c];
         const h = num === 0 ? 2 : (num / 10) * maxH;
         const x = startX + idx*(barW+gap);
+        barCtx.fillStyle = color;
         barCtx.fillRect(x, baseY - h, barW, h);
         barCtx.fillStyle = "#2c3e4e";
         barCtx.font = "12px sans-serif";
@@ -935,23 +954,23 @@ function renderCharts(){
     // 物料饼图
     const pieCtx = document.getElementById("pieChart").getContext("2d");
     const typeCount = {};
-    allMaterialTypes.forEach(t=>typeCount[t] = 0);
-    chartData.forEach(t=>{ if(typeCount[t.type] !== undefined) typeCount[t.type]++; });
+    allMaterialTypes.forEach(t => typeCount[t] = 0);
+    chartData.forEach(t => { if(typeCount[t.type] !== undefined) typeCount[t.type]++; });
     const pieData = Object.values(typeCount);
     const pieLabels = Object.keys(typeCount);
     const colors = ["#1e4a3b","#346c9c","#d97706","#7c3aed","#dc2626"];
 
-    pieCtx.clearRect(0,0,400,280);
+    pieCtx.clearRect(0, 0, 400, 280);
     const cx = 200, cy = 140, r = 90;
     let start = 0;
-    const total = pieData.reduce((a,b)=>a+b,0);
+    const total = pieData.reduce((a,b) => a+b, 0);
     if(total === 0) {
         pieCtx.fillStyle = "#8aa0b5";
         pieCtx.textAlign = "center";
         pieCtx.font = "14px sans-serif";
         pieCtx.fillText("暂无数据", cx, cy);
     } else {
-        pieData.forEach((val, idx)=>{
+        pieData.forEach((val, idx) => {
             const rate = val / total;
             const end = start + Math.PI*2*rate;
             pieCtx.fillStyle = colors[idx % colors.length];
@@ -971,23 +990,22 @@ function renderCharts(){
         });
     }
 
-    // 月度柱状图
+    // 月度柱状图（修复 monthName 变量）
     const monthCtx = document.getElementById("monthChart").getContext("2d");
-    const monthList = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-    const monthName = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+    const monthNumber = ["01","02","03","04","05","06","07","08","09","10","11","12"];
     const monthCount = {};
-    monthList.forEach(m=>monthCount[m] = 0);
-    chartData.forEach(t=>{
-        if(t.date){
+    monthNumber.forEach(m => monthCount[m] = 0);
+    chartData.forEach(t => {
+        if(t.date) {
             const m = t.date.split('-')[1];
             if(monthCount[m] !== undefined) monthCount[m]++;
         }
     });
 
-    monthCtx.clearRect(0,0,400,280);
+    monthCtx.clearRect(0, 0, 400, 280);
     const mBarW = 24, mGap = 12, mStartX = 15, mBaseY = 230, mMaxH = 170;
     const mColor = "#346c9c";
-    monthList.forEach((m, idx)=>{
+    monthNumber.forEach((m, idx) => {
         const num = monthCount[m];
         const h = num === 0 ? 2 : (num / 10) * mMaxH;
         const x = mStartX + idx*(mBarW+mGap);
@@ -996,62 +1014,62 @@ function renderCharts(){
         monthCtx.fillStyle = "#2c3e4e";
         monthCtx.font = "11px sans-serif";
         monthCtx.textAlign = "center";
-        monthCtx.fillText(monthName[idx], x+mBarW/2, mBaseY+18);
+        monthCtx.fillText(m, x+mBarW/2, mBaseY+18);
         monthCtx.fillText(num, x+mBarW/2, mBaseY - h - 6);
     });
     monthCtx.strokeStyle = "#cfdee9";
     monthCtx.beginPath();
-    monthCtx.move(10, mBaseY);
+    monthCtx.moveTo(10, mBaseY);
     monthCtx.lineTo(390, mBaseY);
     monthCtx.stroke();
 }
 
 // 分析总结文案
-function renderAnalysisSummary(){
+function renderAnalysisSummary() {
     let chartData = [...tasks];
-    if(analysisFilterType === "done") chartData = tasks.filter(t=>t.status==="已完成");
-    if(analysisFilterType === "pending") chartData = tasks.filter(t=>t.status!=="已完成");
+    if(analysisFilterType === "done") chartData = tasks.filter(t => t.status === "已完成");
+    if(analysisFilterType === "pending") chartData = tasks.filter(t => t.status !== "已完成");
     const total = chartData.length;
-    if(total === 0){
+    if(total === 0) {
         document.getElementById("analysisSummary").innerText = "当前筛选下无数据";
         return;
     }
     const courseList = ["PU1","PU2","PU3","KET","PET","FCE"];
     const courseCount = {};
-    courseList.forEach(c=>courseCount[c] = 0);
-    chartData.forEach(t=>courseCount[t.course]++);
-    const maxCourse = Object.entries(courseCount).sort((a,b)=>b[1])[0];
+    courseList.forEach(c => courseCount[c] = 0);
+    chartData.forEach(t => { if(courseCount[t.course] !== undefined) courseCount[t.course]++; });
+    const maxCourse = Object.entries(courseCount).sort((a,b) => b[1] - a[1])[0];
 
     const typeCount = {};
-    allMaterialTypes.forEach(t=>typeCount[t] = 0);
-    chartData.forEach(t=>typeCount[t.type]++);
-    const maxType = Object.entries(typeCount).sort((a,b)=>b[1])[0];
+    allMaterialTypes.forEach(t => typeCount[t] = 0);
+    chartData.forEach(t => { if(typeCount[t.type] !== undefined) typeCount[t.type]++; });
+    const maxType = Object.entries(typeCount).sort((a,b) => b[1] - a[1])[0];
 
-    const monthList = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+    const monthNumber = ["01","02","03","04","05","06","07","08","09","10","11","12"];
     const monthCount = {};
-    monthList.forEach(m=>monthCount[m] = 0);
-    chartData.forEach(t=>{if(t.date) monthCount[t.date.split('-')[1]]++});
-    const maxMonth = Object.entries(monthCount).sort((a,b)=>b[1])[0];
+    monthNumber.forEach(m => monthCount[m] = 0);
+    chartData.forEach(t => { if(t.date) monthCount[t.date.split('-')[1]]++; });
+    const maxMonth = Object.entries(monthCount).sort((a,b) => b[1] - a[1])[0];
 
-    const overdue = tasks.filter(t=>t.status!=="已完成" && t.expectDate && new Date(t.expectDate) < new Date(today));
+    const overdue = tasks.filter(t => t.status !== "已完成" && t.expectDate && new Date(t.expectDate) < new Date(today)).length;
     const txt = `工作量分析总结：
 1. 当前共 ${total} 项物料需求；
 2. 任务最多级别：${maxCourse[0]}（${maxCourse[1]}项）；
 3. 占最高类型：${maxType[0]}（${Math.round(maxType[1]/total*100)}%）；
 4. 工作量高峰：${maxMonth[0]}月（${maxMonth[1]}项）；
-5. 逾期未完成：${overdue.length} 项，请优先跟进。`;
+5. 逾期未完成：${overdue} 项，请优先跟进。`;
     document.getElementById("analysisSummary").innerText = txt;
 }
 
 // 导出当前筛选结果 CSV
-function exportFilterData(){
+function exportFilterData() {
     const list = getFilteredTaskList();
     if(list.length === 0) return alert("当前筛选无数据，无法导出");
     let csv = "id,课标,级别,类别,内容,提需人,提需日期,期望时间,当前状态,是否含图片\n";
-    list.forEach(t=>{
-        csv += `${t.id},"${t.code}","${t.course}","${t.type}","${t.desc}","${t.person}","${t.date}","${t.expectDate}","${t.status}","${t.img ? "是":"否"}\n`;
+    list.forEach(t => {
+        csv += `${t.id},"${t.code.replace(/"/g, '""')}","${t.course}","${t.type}","${t.desc.replace(/"/g, '""')}","${t.person}","${t.date}","${t.expectDate}","${t.status}","${t.img ? "是":"否"}\n`;
     });
-    const blob = new Blob([csv],{type:"text/csv;charset=utf-8"});
+    const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download(`筛选数据_${filterDateStart||"全部"}_${filterDateEnd||"全部"}.csv`);
@@ -1059,16 +1077,16 @@ function exportFilterData(){
 }
 
 // 提需人下拉更新
-function updatePersonFilter(){
+function updatePersonFilter() {
     const set = new Set();
-    tasks.forEach(t=>set.add(t.person||"匿名"));
+    tasks.forEach(t => set.add(t.person || "匿名"));
     const sel = document.getElementById("filterPerson");
     sel.innerHTML = '<option value="all">全部提需人</option>';
-    set.forEach(p=> sel.innerHTML += `<option value="${p}">${p}</option>`);
+    set.forEach(p => sel.innerHTML += `<option value="${p}">${p}</option>`);
 }
 
 // 执行筛选
-function runFilter(){
+function runFilter() {
     searchKey = document.getElementById("searchInput").value;
     filterDateStart = document.getElementById("dateStart").value;
     filterDateEnd = document.getElementById("dateEnd").value;
@@ -1076,7 +1094,7 @@ function runFilter(){
 }
 
 // 重置所有筛选
-function resetFilter(){
+function resetFilter() {
     searchKey = "";
     filterDateStart = "";
     filterDateEnd = "";
@@ -1093,28 +1111,26 @@ function generateTicketText() {
     const code = document.getElementById('taskCode').value.trim();
     const desc = document.getElementById('taskDesc').value.trim() || "待补充";
     const person = document.getElementById('taskPerson').value.trim() || "匿名";
-    const date = document.getElementById('taskDate').value || today;
     const suffix = typeSuffix[mt];
     const codeTxt = code ? `【${code}】` : "";
     const res = `${codeTxt}【${courseFullName[s]}】${mt}：${desc}${suffix} | 提需人：${person}`;
-    document.getElementById('previewTicket').innerHTML = `📝 标准化描述：<br>"${res}"`;
-    return {course:s, type:mt, code, desc, person, date, expectDate:document.getElementById('taskExpectDate').value, img: tempBase64Img};
+    document.getElementById('previewTicket').innerHTML = `📝 标准化描述：<br>"${escapeHtml(res)}"`;
+    return {course:s, type:mt, code, desc, person, date: document.getElementById('taskDate').value, expectDate: document.getElementById('taskExpectDate').value, img: tempBase64Img};
 }
 
 // 新增单条需求
 function addNewTask() {
     const d = generateTicketText();
-    if(!d.desc) return alert("请填写需求内容");
+    if(!d.desc.trim()) return alert("请填写需求内容");
+    const newId = tasks.length ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
     const newItem = {
-        id: tasks.length ? Math.max(...tasks.map(t=>t.id))+1 : 1,
-        code:d.code, course:d.course, type:d.type, desc:d.desc,
-        person:d.person, date:d.date, expectDate:d.expectDate, status:"待处理", img:d.img
+        id: newId, code: d.code, course: d.course, type: d.type, desc: d.desc,
+        person: d.person, date: d.date, expectDate: d.expectDate, status: "待处理", img: d.img
     };
     const key = getUniqueKey(newItem);
-    const exist = tasks.some(t=>getUniqueKey(newItem) === key);
+    const exist = tasks.some(t => getUniqueKey(t) === key);
     if(exist) return alert("该需求已存在，请勿重复添加！");
     tasks.unshift(newItem);
-    // 清空图片
     tempBase64Img = "";
     document.getElementById("imgUpload").value = "";
     document.getElementById("imgPreview").style.display = "none";
@@ -1123,31 +1139,31 @@ function addNewTask() {
 }
 
 // 导出全量周报文本
-function exportWeekReport(){
-    const done = tasks.filter(t=>t.status==="已完成");
-    const pend = tasks.filter(t=>t.status!=="已完成");
+function exportWeekReport() {
+    const done = tasks.filter(t => t.status === "已完成");
+    const pend = tasks.filter(t => t.status !== "已完成");
     let txt = "===== 小班课物料修改周报 =====\n【已完成】\n";
-    done.forEach(t=>txt += `· ${t.desc}（${t.course} ${t.type}，${t.person}）${t.img ? "【含配图】" : ""}\n`);
+    done.forEach(t => txt += `· ${t.desc}（${t.course} ${t.type}，${t.person}）${t.img ? "【含配图】" : ""}\n`);
     txt += "\n【待处理/进行中】\n";
-    pend.forEach(t=>txt += `· ${t.desc}（${t.course} ${t.person}，状态：${t.status}）${t.img ? "【含配图】" : ""}\n`);
-    navigator.clipboard.writeText(txt).then(()=>alert("周报已复制")).catch(e=>console.log(txt));
+    pend.forEach(t => txt += `· ${t.desc}（${t.course} ${t.person}，状态：${t.status}）${t.img ? "【含配图】" : ""}\n`);
+    navigator.clipboard.writeText(txt).then(() => alert("周报已复制")).catch(() => console.log(txt));
 }
 
 // 导出全量CSV备份
-function exportCSV(){
+function exportCSV() {
     let csv = "id,课标,级别,类别,内容,提需人,提需日期,期望时间,当前状态,是否含图片\n";
-    tasks.forEach(t=>{
-        csv += `${t.id},"${t.code}","${t.course}","${t.type}","${t.desc}","${t.person}","${t.date}","${t.expectDate}","${t.status}","${t.img ? "是" : ""}\n`;
+    tasks.forEach(t => {
+        csv += `${t.id},"${t.code.replace(/"/g, '""')}","${t.course}","${t.type}","${t.desc.replace(/"/g, '""')}","${t.person}","${t.date}","${t.expectDate}","${t.status}","${t.img ? "是" : ""}\n`;
     });
-    const blob = new Blob([csv],{type:"text/csv;charset=utf-8"});
+    const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download("物料需求全量备份.csv");
     a.click();
 }
 
-// 图片上传 - 新增页
-document.getElementById("imgUpload").addEventListener("change", function(e){
+// 图片上传预览 - 新增页
+document.getElementById("imgUpload").addEventListener("change", function(e) {
     const file = e.target.files[0];
     if(!file) return;
     if(!file.type.startsWith("image/")){
@@ -1156,7 +1172,7 @@ document.getElementById("imgUpload").addEventListener("change", function(e){
         return;
     }
     const reader = new FileReader();
-    reader.onload = function(ev){
+    reader.onload = function(ev) {
         tempBase64Img = ev.target.result;
         const preview = document.getElementById("imgPreview");
         preview.src = tempBase64Img;
@@ -1165,8 +1181,8 @@ document.getElementById("imgUpload").addEventListener("change", function(e){
     reader.readAsDataURL(file);
 });
 
-// 图片上传 - 编辑页
-document.getElementById("editImgUpload").addEventListener("change", function(e){
+// 图片上传预览 - 编辑页
+document.getElementById("editImgUpload").addEventListener("change", function(e) {
     const file = e.target.files[0];
     if(!file) return;
     if(!file.type.startsWith("image/")){
@@ -1175,7 +1191,7 @@ document.getElementById("editImgUpload").addEventListener("change", function(e){
         return;
     }
     const reader = new FileReader();
-    reader.onload = function(ev){
+    reader.onload = function(ev) {
         editTempImg = ev.target.result;
         const preview = document.getElementById("editImgPreview");
         preview.src = editTempImg;
@@ -1185,19 +1201,19 @@ document.getElementById("editImgUpload").addEventListener("change", function(e){
 });
 
 // 弹窗相关
-function openDetail(id){
-    const t = tasks.find(x=>x.id === id);
+function openDetail(id) {
+    const t = tasks.find(x => x.id === id);
+    if(!t) return;
     document.getElementById("detailTaskId").value = t.id;
-    document.getElementById("detailCode").innerText = t.code||"无";
+    document.getElementById("detailCode").innerText = t.code || "无";
     document.getElementById("detailCourse").innerText = courseFullName[t.course];
     document.getElementById("detailType").innerText = t.type;
     document.getElementById("detailDesc").innerText = t.desc;
-    document.getElementById("detailPerson").innerText = t.person||"匿名";
-    document.getElementById("detailDate").innerText = t.date||"无";
-    document.getElementById("detailExpectDate").innerText = t.expectDate||"无";
+    document.getElementById("detailPerson").innerText = t.person || "匿名";
+    document.getElementById("detailDate").innerText = t.date || "无";
+    document.getElementById("detailExpectDate").innerText = t.expectDate || "无";
     document.getElementById("detailStatus").innerText = t.status;
 
-    // 详情页图片
     const detailImg = document.getElementById("detailImg");
     const noTip = document.getElementById("noImgTip");
     if(t.img){
@@ -1210,9 +1226,11 @@ function openDetail(id){
     }
     document.getElementById("detailModal").style.display = "flex";
 }
-function closeDetail(){ document.getElementById("detailModal").style.display = "none"; }
-function openEdit(id){
-    const t = tasks.find(x=>x.id === id);
+function closeDetail() { document.getElementById("detailModal").style.display = "none"; }
+
+function openEdit(id) {
+    const t = tasks.find(x => x.id === id);
+    if(!t) return;
     document.getElementById("editTaskId").value = t.id;
     document.getElementById("editCourse").value = t.course;
     document.getElementById("editType").value = t.type;
@@ -1223,7 +1241,6 @@ function openEdit(id){
     document.getElementById("editExpectDate").value = t.expectDate;
     document.getElementById("editStatus").value = t.status;
 
-    // 编辑页回显图片
     editTempImg = t.img || "";
     const editImg = document.getElementById("editImgPreview");
     if(t.img){
@@ -1235,14 +1252,15 @@ function openEdit(id){
     document.getElementById("editImgUpload").value = "";
     document.getElementById("editModal").style.display = "flex";
 }
-function closeEdit(){
+function closeEdit() {
     document.getElementById("editModal").style.display = "none";
     editTempImg = "";
     document.getElementById("editImgPreview").style.display = "none";
 }
-function saveEdit(){
-    const id = Number(document.getElementById("editTaskId"));
-    const t = tasks.find(x=>x.id === id);
+function saveEdit() {
+    const id = Number(document.getElementById("editTaskId").value);
+    const t = tasks.find(x => x.id === id);
+    if(!t) return;
     t.course = document.getElementById("editCourse").value;
     t.type = document.getElementById("editType").value;
     t.code = document.getElementById("editCode").value.trim();
@@ -1250,27 +1268,32 @@ function saveEdit(){
     t.person = document.getElementById("editPerson").value.trim();
     t.date = document.getElementById("editDate").value;
     t.expectDate = document.getElementById("editExpectDate").value;
+    // 修复：获取状态下拉框的 value
     t.status = document.getElementById("editStatus").value;
     if(editTempImg) t.img = editTempImg;
-
     closeEdit();
     refreshAll();
     alert("修改完成");
 }
-function openImportModal(){ document.getElementById("importTextarea").value = ""; document.getElementById("importModal").style.display = "flex"; }
-function closeImportModal(){ document.getElementById("importModal").style.display = "none"; }
-function batchImport(){
+function openImportModal() {
+    document.getElementById("importTextarea").value = "";
+    document.getElementById("importModal").style.display = "flex";
+}
+function closeImportModal() { document.getElementById("importModal").style.display = "none"; }
+function batchImport() {
     const text = document.getElementById("importTextarea").value;
-    const lines = text.split("\n").filter(line=>line.trim());
+    const lines = text.split("\n").filter(line => line.trim());
     const importList = [];
-    lines.forEach(line=>{
-        const arr = line.split(",").map(s=>s.trim());
-        if(arr.length <5) return;
+    lines.forEach(line => {
+        const arr = line.split(",").map(s => s.trim());
+        if(arr.length < 5) return;
         const [_, code, course, type, desc, person, date, expect, status] = arr;
         if(!courseFullName[course] || !allMaterialTypes.includes(type) || !desc) return;
         importList.push({
-            id:0, code, course, type, desc, person:person||"匿名",
-            date:date||"", expectDate:expect||"", status:status||"待处理", img:""
+            id: 0, code: code, course: course, type: type, desc: desc,
+            person: person || "匿名", date: date || "", expectDate: expect || "",
+            status: (status === "已完成" || status === "进行中" || status === "待处理") ? status : "待处理",
+            img: ""
         });
     });
     const res = handleImportData(importList);
@@ -1278,35 +1301,37 @@ function batchImport(){
     refreshAll();
     alert(`导入完成：新增 ${res.add} 条 | 过滤重复 ${res.repeat} 条`);
 }
-function uploadFile(){
+function uploadFile() {
     const file = document.getElementById("fileUpload").files[0];
     if(!file) return alert("请选择文件");
     const reader = new FileReader();
-    reader.onload = function(e){
+    reader.onload = function(e) {
         const content = e.target.result;
-        const lines = content.split("\n").filter(line=>line.trim());
+        const lines = content.split("\n").filter(line => line.trim());
         const importList = [];
-        for(let i=1; i<lines.length; i++){
-            const arr = lines[i].split(",").map(s=>s.trim().replace(/"/g,""));
-            if(arr.length <5) continue;
+        for(let i = 1; i < lines.length; i++) {
+            const arr = lines[i].split(",").map(s => s.trim().replace(/"/g, ""));
+            if(arr.length < 5) continue;
             const [_, code, course, type, desc, person, date, expect, status] = arr;
-            if(!courseFullName[course] || !allMaterialTypes || !desc) continue;
+            if(!courseFullName[course] || !allMaterialTypes.includes(type) || !desc) continue;
             importList.push({
-                id:0, code, course, type, desc, person:person||"匿名",
-                date:date||"", expectDate:expect||"", status:status||"", img:""
+                id: 0, code: code, course: course, type: type, desc: desc,
+                person: person || "匿名", date: date || "", expectDate: expect || "",
+                status: (status === "已完成" || status === "进行中" || status === "待处理") ? status : "待处理",
+                img: ""
             });
         }
         const res = handleImportData(importList);
         refreshAll();
         alert(`文件导入：新增 ${res.add} 条 | 过滤重复 ${res.repeat} 条`);
     };
-    reader.readAsText(file);
+    reader.readAsText(file, "UTF-8");
 }
 
 // 事件绑定
-document.querySelectorAll('.analysis-tab').forEach(tab=>{
-    tab.onclick = function(){
-        document.querySelectorAll('.analysis-tab').forEach(t=>t.classList.remove("active"));
+document.querySelectorAll('.analysis-tab').forEach(tab => {
+    tab.onclick = function() {
+        document.querySelectorAll('.analysis-tab').forEach(t => t.classList.remove("active"));
         this.classList.add("active");
         analysisFilterType = this.dataset.type;
         renderCharts();
@@ -1316,7 +1341,7 @@ document.querySelectorAll('.analysis-tab').forEach(tab=>{
 document.getElementById("filterBtn").addEventListener("click", runFilter);
 document.getElementById("resetFilterBtn").addEventListener("click", resetFilter);
 document.getElementById("exportFilterBtn").addEventListener("click", exportFilterData);
-document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter") runFilter();});
+document.getElementById("searchInput").addEventListener("keydown", e => { if(e.key === "Enter") runFilter(); });
 document.getElementById('filterCourse').addEventListener('change', renderTasks);
 document.getElementById('filterType').addEventListener('change', renderTasks);
 document.getElementById('filterStatus').addEventListener('change', renderTasks);
@@ -1324,24 +1349,23 @@ document.getElementById('filterPerson').addEventListener('change', renderTasks);
 document.getElementById('genTicketBtn').addEventListener('click', generateTicketText);
 document.getElementById('addTaskBtn').addEventListener('click', addNewTask);
 document.getElementById('exportReportBtn').addEventListener('click', exportWeekReport);
-document.getElementById('clearInputBtn').addEventListener('click', ()=>{
+document.getElementById('clearInputBtn').addEventListener('click', () => {
     document.getElementById('taskCode').value = "";
     document.getElementById('taskDesc').value = "";
     document.getElementById('taskPerson').value = "";
     document.getElementById('taskDate').value = "";
     document.getElementById('taskExpectDate').value = "";
-    document.getElementById('taskScreenshot').value = "";
     tempBase64Img = "";
     document.getElementById("imgUpload").value = "";
     document.getElementById("imgPreview").style.display = "none";
     generateTicketText();
 });
 document.getElementById("closeDetailModal").addEventListener("click", closeDetail);
-document.getElementById("openEditFromDetailBtn").addEventListener("click", ()=>{closeDetail(); openEdit(Number(document.getElementById("detailTaskId")));});
+document.getElementById("openEditFromDetailBtn").addEventListener("click", () => { closeDetail(); openEdit(Number(document.getElementById("detailTaskId").value)); });
 document.getElementById("closeEditModal").addEventListener("click", closeEdit);
 document.getElementById("saveEditBtn").addEventListener("click", saveEdit);
 document.getElementById("openImportModal").addEventListener("click", openImportModal);
-document.getElementById("closeImportModal").addEventListener("click", closeImport);
+document.getElementById("closeImportModal").addEventListener("click", closeImportModal);
 document.getElementById("confirmImportBtn").addEventListener("click", batchImport);
 document.getElementById("exportCSVBtn").addEventListener("click", exportCSV);
 document.getElementById("uploadFile").addEventListener("click", uploadFile);
