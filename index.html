@@ -118,10 +118,9 @@
 
 <script>
 // ========== 请替换为你的 Supabase 配置 ==========
-const supabaseUrl = 'https://xpeqyevrmybxqgfcsher.supabase.co';      // 
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZXF5ZXZybXlieHFnZmNzaGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTU2MzAsImV4cCI6MjA5Njk5MTYzMH0.19tdRzEnocY5vrdDr2qv7qxy2QwIa67QUNrBFkOCQOk'; // 
+const supabaseUrl = 'https://xpeqyevrmybxqgfcsher.supabase.co';   
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZXF5ZXZybXlieHFnZmNzaGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTU2MzAsImV4cCI6MjA5Njk5MTYzMH0.19tdRzEnocY5vrdDr2qv7qxy2QwIa67QUNrBFkOCQOk';    // 
 
-// 重要：避免与全局 supabase 变量冲突
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 let tasks = [];
@@ -137,7 +136,7 @@ async function loadTasks() {
     const { data, error } = await supabaseClient.from('tasks').select('*').order('id', { ascending: false });
     if (error) {
         console.error(error);
-        alert('加载数据失败，请检查 Supabase 配置或网络\n' + error.message);
+        alert('加载数据失败：' + error.message);
         tasks = [];
     } else {
         tasks = data || [];
@@ -179,7 +178,7 @@ function updateStats() {
     const doneCount = tasks.filter(t=>t.status==='已完成').length;
     const pending = tasks.filter(t=>t.status!=='已完成').length;
     const rate = total===0?0:Math.round(doneCount/total*100);
-    const overdue = tasks.filter(t=>t.status!=='已完成' && t.expectDate && new Date(t.expectDate)<new Date(today)).length;
+    const overdue = tasks.filter(t=>t.status!=='已完成' && t.expectdate && new Date(t.expectdate)<new Date(today)).length;
     document.getElementById('statsGrid').innerHTML = `<div class="stat-card"><div class="stat-number">${total}</div><div class="stat-label">总需求</div></div>
     <div class="stat-card"><div class="stat-number">${doneCount}</div><div class="stat-label">已完成 ✅</div></div>
     <div class="stat-card"><div class="stat-number">${pending}</div><div class="stat-label">待处理 ⏳</div></div>
@@ -193,7 +192,7 @@ function renderTasks() {
     if(!list.length) { container.innerHTML = '<div style="padding:2rem;text-align:center;">暂无数据</div>'; return; }
     let html = '';
     list.forEach(t => {
-        const isOverdue = t.status!=='已完成' && t.expectDate && new Date(t.expectDate)<new Date(today);
+        const isOverdue = t.status!=='已完成' && t.expectdate && new Date(t.expectdate)<new Date(today);
         html += `<div class="task-item ${isOverdue?'overdue':''}" data-id="${t.id}">
             <div class="task-info"><div class="task-title">${escapeHtml(t.description)}</div>
             <div class="task-meta"><span class="task-category">${t.course} · ${t.type}</span><span class="task-person">提需人：${escapeHtml(t.person||'')}</span><span class="task-date">${t.date||''}</span>${t.img?' 📷':''}</div></div>
@@ -220,7 +219,7 @@ function openDetail(id) {
     <div class="detail-row"><strong>内容：</strong> ${escapeHtml(t.description)}</div>
     <div class="detail-row"><strong>提需人：</strong> ${t.person||'匿名'}</div>
     <div class="detail-row"><strong>提需日期：</strong> ${t.date||'无'}</div>
-    <div class="detail-row"><strong>期望完成：</strong> ${t.expectDate||'无'}</div>
+    <div class="detail-row"><strong>期望完成：</strong> ${t.expectdate||'无'}</div>
     <div class="detail-row"><strong>状态：</strong> ${t.status}</div>
     <div class="detail-row"><strong>配图：</strong> ${t.img ? `<img src="${t.img}" style="max-width:100%;max-height:200px;">` : '无'}</div>`;
     document.getElementById('detailContent').innerHTML = html;
@@ -239,7 +238,7 @@ function openEdit(id) {
     <div class="form-group"><label>内容</label><textarea id="editDesc" rows="3">${escapeHtml(t.description)}</textarea></div>
     <div class="form-group"><label>提需人</label><input type="text" id="editPerson" value="${escapeHtml(t.person||'')}"></div>
     <div class="form-group"><label>提需日期</label><input type="date" id="editDate" value="${t.date||''}"></div>
-    <div class="form-group"><label>期望完成</label><input type="date" id="editExpectDate" value="${t.expectDate||''}"></div>
+    <div class="form-group"><label>期望完成</label><input type="date" id="editExpectDate" value="${t.expectdate||''}"></div>
     <div class="form-group"><label>状态</label><select id="editStatus"><option value="待处理" ${t.status==='待处理'?'selected':''}>待处理</option><option value="进行中" ${t.status==='进行中'?'selected':''}>进行中</option><option value="已完成" ${t.status==='已完成'?'selected':''}>已完成</option></select></div>
     <div class="form-group"><label>更换配图</label><input type="file" id="editImgUpload" accept="image/*"><img id="editImgPreview" class="img-preview" style="${t.img?'display:block':'display:none'}" src="${t.img||''}"></div>`;
     document.getElementById('editForm').innerHTML = html;
@@ -263,7 +262,7 @@ async function saveEdit() {
         description: document.getElementById('editDesc').value,
         person: document.getElementById('editPerson').value,
         date: document.getElementById('editDate').value,
-        expectDate: document.getElementById('editExpectDate').value,
+        expectdate: document.getElementById('editExpectDate').value,
         status: document.getElementById('editStatus').value,
         img: editTempImg
     };
@@ -280,8 +279,8 @@ async function addNewTask() {
     if(!description) return alert('请填写需求内容');
     const person = document.getElementById('taskPerson').value.trim();
     const date = document.getElementById('taskDate').value;
-    const expectDate = document.getElementById('taskExpectDate').value;
-    const newTask = { code, course, type, description, person, date, expectDate, status:'待处理', img: tempBase64Img };
+    const expectdate = document.getElementById('taskExpectDate').value;
+    const newTask = { code, course, type, description, person, date, expectdate, status:'待处理', img: tempBase64Img };
     const { error } = await supabaseClient.from('tasks').insert([newTask]);
     if(error) alert('添加失败：'+error.message);
     else {
@@ -309,7 +308,7 @@ async function handleImportData(importList, mode) {
     for(let item of importList) {
         const key = getUniqueKey(item);
         if(mode==='append' && existKeys.has(key)) { repeat++; continue; }
-        newItems.push({ code:item.code, course:item.course, type:item.type, description:item.description, person:item.person, date:item.date, expectDate:item.expectDate, status:item.status||'待处理', img:'' });
+        newItems.push({ code:item.code, course:item.course, type:item.type, description:item.description, person:item.person, date:item.date, expectdate:item.expectdate, status:item.status||'待处理', img:'' });
     }
     if(newItems.length) {
         const { error } = await supabaseClient.from('tasks').insert(newItems);
@@ -329,7 +328,7 @@ async function batchImport() {
         if(arr.length<5) continue;
         const [_, code, course, type, description, person, date, expect, status] = arr;
         if(!courseFullName[course] || !allMaterialTypes.includes(type)) continue;
-        importList.push({ code, course, type, description, person:person||'匿名', date:date||'', expectDate:expect||'', status: (status==='已完成'||status==='进行中'||status==='待处理')?status:'待处理' });
+        importList.push({ code, course, type, description, person:person||'匿名', date:date||'', expectdate:expect||'', status: (status==='已完成'||status==='进行中'||status==='待处理')?status:'待处理' });
     }
     const mode = document.getElementById('importMode').value;
     await handleImportData(importList, mode);
@@ -348,7 +347,7 @@ async function uploadCSV() {
             if(arr.length<5) continue;
             const [_, code, course, type, description, person, date, expect, status] = arr;
             if(!courseFullName[course] || !allMaterialTypes.includes(type)) continue;
-            importList.push({ code, course, type, description, person:person||'匿名', date:date||'', expectDate:expect||'', status: (status==='已完成'||status==='进行中'||status==='待处理')?status:'待处理' });
+            importList.push({ code, course, type, description, person:person||'匿名', date:date||'', expectdate:expect||'', status: (status==='已完成'||status==='进行中'||status==='待处理')?status:'待处理' });
         }
         const mode = document.getElementById('importMode').value;
         await handleImportData(importList, mode);
@@ -383,7 +382,7 @@ function exportWeekReport() {
 }
 function exportCSV() {
     let csv = 'id,课标,级别,类别,内容,提需人,提需日期,期望时间,状态,含图片\n';
-    tasks.forEach(t => { csv += `${t.id},"${t.code||''}","${t.course}","${t.type}","${t.description}","${t.person||''}","${t.date||''}","${t.expectDate||''}","${t.status}","${t.img?'是':'否'}\n`; });
+    tasks.forEach(t => { csv += `${t.id},"${t.code||''}","${t.course}","${t.type}","${t.description}","${t.person||''}","${t.date||''}","${t.expectdate||''}","${t.status}","${t.img?'是':'否'}\n`; });
     const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `物料需求全量备份_${new Date().toISOString().slice(0,19)}.csv`; a.click();
 }
