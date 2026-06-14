@@ -5,24 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>小班课物料需求管理系统（云端版）</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, sans-serif;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: system-ui, 'Segoe UI', 'Inter', sans-serif; }
         body { background: #f0f4f9; padding: 1.5rem; }
         .container { max-width: 1600px; margin: 0 auto; }
-        .header {
-            background: linear-gradient(135deg, #1a3c34 0%, #0f2c25 100%);
-            color: white; padding: 2rem; border-radius: 2rem; margin-bottom: 2rem;
-        }
-        .header h1 { font-size: 2rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .sub { margin-top: 0.8rem; opacity: 0.85; }
+        .header { background: linear-gradient(135deg, #1a3c34 0%, #0f2c25 100%); color: white; padding: 2rem; border-radius: 2rem; margin-bottom: 2rem; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 1rem; margin-bottom: 2rem; }
         .stat-card { background: white; border-radius: 1.5rem; padding: 1.2rem; border: 1px solid #e9edf2; }
         .stat-number { font-size: 2.2rem; font-weight: 700; color: #1e4a3b; }
-        .stat-label { color: #5f6c7a; font-size: 0.85rem; margin-top: 0.5rem; }
         .analysis-card { background: white; border-radius: 1.5rem; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #eef2f6; }
         .analysis-tab-bar { display: flex; gap: 0.6rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
         .analysis-tab { padding: 0.4rem 1rem; border-radius: 2rem; border: 1px solid #cfdee9; background: #fff; cursor: pointer; }
@@ -32,39 +21,32 @@
         @media (max-width: 768px) { .chart-grid { grid-template-columns: 1fr; } }
         .chart-box { min-height: 320px; display: flex; flex-direction: column; align-items: center; }
         canvas { max-width: 100%; }
-        .analysis-summary { background: #f8fafc; padding: 1rem; border-radius: 1rem; border-left: 4px solid #1e4a3b; white-space: pre-line; font-size: 0.85rem; }
+        .analysis-summary { background: #f8fafc; padding: 1rem; border-radius: 1rem; border-left: 4px solid #1e4a3b; white-space: pre-line; }
         .two-col { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; margin-bottom: 2rem; }
         @media (max-width: 780px) { .two-col { grid-template-columns: 1fr; } }
         .card { background: white; border-radius: 1.5rem; padding: 1.5rem; border: 1px solid #eef2f6; }
-        .card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: #1f2a3a; }
         .form-group { margin-bottom: 1rem; }
-        label { font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 0.3rem; color: #2c3e4e; }
-        select, input, textarea { width: 100%; padding: 0.7rem; border-radius: 1rem; border: 1px solid #cfdee9; font-size: 0.9rem; }
-        button { background: #1e4a3b; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 2rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        label { font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 0.3rem; }
+        select, input, textarea { width: 100%; padding: 0.7rem; border-radius: 1rem; border: 1px solid #cfdee9; }
+        button { background: #1e4a3b; color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 2rem; cursor: pointer; transition: 0.2s; }
         button:hover { background: #0f3529; transform: translateY(-1px); }
-        .preview-block { background: #f8fafc; padding: 1rem; border-radius: 1rem; margin-top: 1rem; border-left: 4px solid #1e4a3b; }
         .filter-bar { display: flex; gap: 0.8rem; margin-bottom: 1.2rem; flex-wrap: wrap; align-items: center; }
         .filter-select, .filter-input-date, .filter-input-key { padding: 0.4rem 1rem; border-radius: 2rem; border: 1px solid #cfdee9; }
-        .task-item { background: #fefefe; border-bottom: 1px solid #edf2f7; padding: 1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; flex-wrap: wrap; cursor: pointer; }
+        .task-item { background: #fefefe; border-bottom: 1px solid #edf2f7; padding: 1rem 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; cursor: pointer; }
         .task-item:hover { background: #f8fafc; }
         .task-info { flex: 2; }
         .task-title { font-weight: 600; margin-bottom: 0.2rem; }
         .task-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; font-size: 0.7rem; }
         .task-category, .task-person { background: #eef2ff; padding: 0.2rem 0.6rem; border-radius: 40px; }
-        .task-date { color: #64748b; }
         .task-status { display: flex; gap: 0.5rem; }
-        .status-btn { background: none; padding: 0.3rem 0.8rem; border-radius: 40px; border: 1px solid #cfdee9; color: #4a5b6e; }
+        .status-btn { background: none; padding: 0.3rem 0.8rem; border-radius: 40px; border: 1px solid #cfdee9; color: #4a5b6e; font-size: 0.7rem; }
         .status-btn.done { background: #e0f2e9; border-color: #1e4a3b; color: #1e4a3b; }
-        .del-btn, .edit-btn, .detail-btn { background: none; border: 1px solid #cfdee9; }
-        .modal-mask { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; display: none; }
-        .modal-box { width: min(700px,90vw); background: #fff; border-radius: 1.5rem; padding: 1.8rem; max-height: 90vh; overflow-y: auto; }
-        .img-preview { max-width: 100%; max-height: 240px; border-radius: 0.5rem; margin-top: 0.5rem; display: none; }
-        .footer-note { text-align: center; font-size: 0.75rem; color: #8a99aa; margin-top: 2rem; }
-        .clear-input-btn { background: #64748b; margin-top: 0.5rem; }
-        .add-task-btn { margin-top: 0.5rem; }
-        .export-btn { margin-top: 0.5rem; background: #346c9c; }
-        .batch-btn-group { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-        .detail-row { margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #edf2f7; }
+        .modal-mask { position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:999; display:none; }
+        .modal-box { width: min(700px,90vw); background:#fff; border-radius:1.5rem; padding:1.8rem; max-height:90vh; overflow-y:auto; }
+        .img-preview { max-width:100%; max-height:240px; border-radius:0.5rem; display:none; margin-top:0.5rem; }
+        .footer-note { text-align:center; font-size:0.75rem; color:#8a99aa; margin-top:2rem; }
+        .preview-block { background:#f8fafc; padding:1rem; border-radius:1rem; margin-top:1rem; border-left:4px solid #1e4a3b; word-break:break-word; }
+        .detail-row { margin-bottom:0.8rem; padding-bottom:0.8rem; border-bottom:1px solid #edf2f7; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -75,7 +57,6 @@
         <div class="sub">团队实时共享 · 数据永久保存</div>
     </div>
     <div class="stats-grid" id="statsGrid"></div>
-
     <div class="analysis-card">
         <h3>📊 工作量图表分析看板</h3>
         <div class="analysis-tab-bar">
@@ -97,17 +78,17 @@
             <div class="form-group"><label>课程级别</label><select id="courseSeries"><option value="PU1">PU1 (YLE1)</option><option value="PU2">PU2 (YLE2)</option><option value="PU3">PU3 (YLE3)</option><option value="KET">KET</option><option value="PET">PET</option><option value="FCE">FCE</option></select></div>
             <div class="form-group"><label>物料类型</label><select id="materialType"><option value="课件">课件修改</option><option value="学习手册">学习手册内容</option><option value="真题添加">真题内容添加</option><option value="海报/视频">海报/宣传视频</option><option value="小程序替换">小程序文件替换</option></select></div>
             <div class="form-group"><label>课标编号</label><input type="text" id="taskCode" placeholder="例：YLE1-L1-U9-LC1-1"></div>
-            <div class="form-group"><label>需求内容描述</label><textarea id="taskDesc" rows="3" placeholder="例：将课件模考说明"></textarea><button class="clear-input-btn" id="clearInputBtn">清空输入框</button></div>
+            <div class="form-group"><label>需求内容描述</label><textarea id="taskDesc" rows="3" placeholder="例：将课件模考说明"></textarea><button class="clear-input-btn" id="clearInputBtn" style="background:#64748b; margin-top:0.5rem;">清空输入框</button></div>
             <div class="form-group"><label>提需人</label><input type="text" id="taskPerson" placeholder="例：心静"></div>
             <div class="form-group"><label>提需日期</label><input type="date" id="taskDate"></div>
             <div class="form-group"><label>期望完成时间</label><input type="date" id="taskExpectDate"></div>
             <div class="form-group"><label>上传截图/配图</label><input type="file" id="imgUpload" accept="image/*"><img id="imgPreview" class="img-preview"></div>
             <button id="genTicketBtn">⚡ 自动生成标准化描述</button>
             <div id="previewTicket" class="preview-block"></div>
-            <button id="addTaskBtn" class="add-task-btn">➕ 添加需求至看板</button>
-            <button id="exportReportBtn" class="export-btn">📄 导出全量周报</button>
-            <div class="form-group"><label>批量导入模式</label><select id="importMode"><option value="append">追加（仅新增不重复）</option><option value="replace">覆盖重复项</option></select><div class="mode-tip" style="font-size:0.75rem;color:#64748b;">重复规则：课标+课程+类型+描述</div></div>
-            <div class="batch-btn-group">
+            <button id="addTaskBtn" class="add-task-btn" style="margin-top:0.5rem;">➕ 添加需求至看板</button>
+            <button id="exportReportBtn" class="export-btn" style="margin-top:0.5rem; background:#346c9c;">📄 导出全量周报</button>
+            <div class="form-group"><label>批量导入模式</label><select id="importMode"><option value="append">追加（仅新增不重复）</option><option value="replace">覆盖重复项</option></select></div>
+            <div class="batch-btn-group" style="display:flex; gap:0.5rem; margin-top:0.5rem;">
                 <button id="openImportModal">📥 文本批量导入</button>
                 <button id="exportCSVBtn">💾 全量CSV备份</button>
             </div>
@@ -131,18 +112,18 @@
     </div>
 </div>
 
-<!-- 弹窗 -->
 <div class="modal-mask" id="detailModal"><div class="modal-box"><div class="modal-title">📋 需求详情</div><input type="hidden" id="detailTaskId"><div id="detailContent"></div><div class="modal-buttons" style="display:flex; gap:0.8rem; margin-top:1rem;"><button id="openEditFromDetailBtn">编辑</button><button class="cancel-btn" id="closeDetailModal">关闭</button></div></div></div>
 <div class="modal-mask" id="editModal"><div class="modal-box"><div class="modal-title">✏️ 编辑需求</div><input type="hidden" id="editTaskId"><div id="editForm"></div><div class="modal-buttons"><button id="saveEditBtn">保存</button><button class="cancel-btn" id="closeEditModal">取消</button></div></div></div>
 <div class="modal-mask" id="importModal"><div class="modal-box"><div class="modal-title">📥 批量文本导入</div><textarea id="importTextarea" rows="12" placeholder="格式：序号,课标,级别,类别,内容,提需人,提需日期,期望时间,状态"></textarea><div class="modal-buttons"><button id="confirmImportBtn">确认导入</button><button class="cancel-btn" id="closeImportModal">取消</button></div></div></div>
 
 <script>
-// ========== 1. 请替换为你的 Supabase 配置 ==========
-const supabaseUrl = 'https://xpeqyevrmybxqgfcsher.supabase.co/rest/v1/';      
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZXF5ZXZybXlieHFnZmNzaGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTU2MzAsImV4cCI6MjA5Njk5MTYzMH0.19tdRzEnocY5vrdDr2qv7qxy2QwIa67QUNrBFkOCQOk'; //
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+// ========== 请替换为你的 Supabase 配置 ==========
+const supabaseUrl = 'https://xpeqyevrmybxqgfcsher.supabase.co/rest/v1/';      // 
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZXF5ZXZybXlieHFnZmNzaGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MTU2MzAsImV4cCI6MjA5Njk5MTYzMH0.19tdRzEnocY5vrdDr2qv7qxy2QwIa67QUNrBFkOCQOk'; // 
 
-// 全局变量
+// 重要：避免与全局 supabase 变量冲突
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
 let tasks = [];
 let analysisFilterType = 'all';
 let searchKey = '', filterDateStart = '', filterDateEnd = '';
@@ -152,12 +133,11 @@ const allMaterialTypes = ["课件","学习手册","真题添加","海报/视频"
 const courseFullName = { PU1:"PU1 (YLE1)", PU2:"PU2 (YLE2)", PU3:"PU3 (YLE3)", KET:"KET", PET:"PET", FCE:"FCE" };
 const typeSuffix = { "课件":"；课件修改完成并挂载","学习手册":"；手册修改并归档","真题添加":"；真题内容补充完成","海报/视频":"；物料审核上传","小程序替换":"；小程序文件替换完成" };
 
-// 从云端加载数据
 async function loadTasks() {
-    const { data, error } = await supabase.from('tasks').select('*').order('id', { ascending: false });
+    const { data, error } = await supabaseClient.from('tasks').select('*').order('id', { ascending: false });
     if (error) {
         console.error(error);
-        alert('加载数据失败，请检查 Supabase 配置或网络');
+        alert('加载数据失败，请检查 Supabase 配置或网络\n' + error.message);
         tasks = [];
     } else {
         tasks = data || [];
@@ -165,26 +145,19 @@ async function loadTasks() {
     refreshAll();
 }
 
-// 增删改操作
-async function addTaskToCloud(task) {
-    const { data, error } = await supabase.from('tasks').insert([task]).select();
-    if (error) { alert('添加失败：'+error.message); return null; }
-    return data[0];
-}
 async function updateTaskInCloud(id, updates) {
-    const { error } = await supabase.from('tasks').update(updates).eq('id', id);
+    const { error } = await supabaseClient.from('tasks').update(updates).eq('id', id);
     if (error) alert('更新失败：'+error.message);
 }
+
 async function deleteTaskFromCloud(id) {
-    const { error } = await supabase.from('tasks').delete().eq('id', id);
+    const { error } = await supabaseClient.from('tasks').delete().eq('id', id);
     if (error) alert('删除失败：'+error.message);
 }
 
-// 辅助函数
 function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 function getUniqueKey(item) { return `${item.code}|${item.course}|${item.type}|${item.description}`; }
 
-// 筛选
 function getFilteredTasks() {
     let list = [...tasks];
     if(filterDateStart || filterDateEnd) {
@@ -198,8 +171,7 @@ function getFilteredTasks() {
     const ft = document.getElementById('filterType').value;
     const fs = document.getElementById('filterStatus').value;
     const fp = document.getElementById('filterPerson').value;
-    list = list.filter(t => (fc==='all' || t.course===fc) && (ft==='all' || t.type===ft) && (fs==='all' || t.status===fs) && (fp==='all' || t.person===fp));
-    return list;
+    return list.filter(t => (fc==='all' || t.course===fc) && (ft==='all' || t.type===ft) && (fs==='all' || t.status===fs) && (fp==='all' || t.person===fp));
 }
 
 function updateStats() {
@@ -231,7 +203,6 @@ function renderTasks() {
             <button class="status-btn del-btn" data-delid="${t.id}">删除</button></div></div>`;
     });
     container.innerHTML = html;
-    // 绑定事件
     document.querySelectorAll('.status-btn:not(.detail-btn):not(.edit-btn):not(.del-btn)').forEach(btn => btn.onclick = async (e) => { e.stopPropagation(); const id=Number(e.target.dataset.id); const t=tasks.find(x=>x.id===id); if(!t) return; const arr=["待处理","进行中","已完成"]; const idx=arr.indexOf(t.status); const newStatus=arr[(idx+1)%3]; await updateTaskInCloud(id,{status:newStatus}); await loadTasks(); });
     document.querySelectorAll('.del-btn').forEach(btn => btn.onclick = async (e) => { e.stopPropagation(); if(confirm('删除？')){ await deleteTaskFromCloud(Number(e.target.dataset.delid)); await loadTasks(); } });
     document.querySelectorAll('.detail-btn').forEach(btn => btn.onclick = (e) => { e.stopPropagation(); openDetail(Number(e.target.dataset.did)); });
@@ -273,7 +244,6 @@ function openEdit(id) {
     <div class="form-group"><label>更换配图</label><input type="file" id="editImgUpload" accept="image/*"><img id="editImgPreview" class="img-preview" style="${t.img?'display:block':'display:none'}" src="${t.img||''}"></div>`;
     document.getElementById('editForm').innerHTML = html;
     document.getElementById('editModal').style.display = 'flex';
-    // 图片预览
     document.getElementById('editImgUpload')?.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if(file && file.type.startsWith('image/')) {
@@ -302,7 +272,6 @@ async function saveEdit() {
     closeEdit();
 }
 
-// 新增需求
 async function addNewTask() {
     const course = document.getElementById('courseSeries').value;
     const type = document.getElementById('materialType').value;
@@ -313,7 +282,7 @@ async function addNewTask() {
     const date = document.getElementById('taskDate').value;
     const expectDate = document.getElementById('taskExpectDate').value;
     const newTask = { code, course, type, description, person, date, expectDate, status:'待处理', img: tempBase64Img };
-    const { error } = await supabase.from('tasks').insert([newTask]);
+    const { error } = await supabaseClient.from('tasks').insert([newTask]);
     if(error) alert('添加失败：'+error.message);
     else {
         tempBase64Img = '';
@@ -324,7 +293,6 @@ async function addNewTask() {
     }
 }
 
-// 图片预览
 document.getElementById('imgUpload').addEventListener('change', (e) => {
     const file = e.target.files[0];
     if(file && file.type.startsWith('image/')) {
@@ -334,7 +302,6 @@ document.getElementById('imgUpload').addEventListener('change', (e) => {
     }
 });
 
-// 批量导入逻辑
 async function handleImportData(importList, mode) {
     const existKeys = new Set(tasks.map(getUniqueKey));
     let newItems = [];
@@ -345,7 +312,7 @@ async function handleImportData(importList, mode) {
         newItems.push({ code:item.code, course:item.course, type:item.type, description:item.description, person:item.person, date:item.date, expectDate:item.expectDate, status:item.status||'待处理', img:'' });
     }
     if(newItems.length) {
-        const { error } = await supabase.from('tasks').insert(newItems);
+        const { error } = await supabaseClient.from('tasks').insert(newItems);
         if(error) alert('批量导入失败：'+error.message);
         else await loadTasks();
     }
@@ -390,42 +357,19 @@ async function uploadCSV() {
     reader.readAsText(file, 'UTF-8');
 }
 
-// 图表渲染（简化版，实际使用时可以补充完整）
-function renderCharts() {
-    // 这里可以调用之前的完整图表函数，为了简洁略，不影响核心功能
-    console.log('图表渲染占位');
-}
-function renderAnalysisSummary() {
-    document.getElementById('analysisSummary').innerHTML = '工作量分析：当前共 ' + tasks.length + ' 条需求。';
-}
-function refreshAll() {
-    updateStats();
-    renderTasks();
-    updatePersonFilter();
-    renderCharts();
-    renderAnalysisSummary();
-}
+function renderCharts() { console.log('图表渲染占位'); }
+function renderAnalysisSummary() { document.getElementById('analysisSummary').innerHTML = `工作量分析：当前共 ${tasks.length} 条需求。`; }
+function refreshAll() { updateStats(); renderTasks(); updatePersonFilter(); renderCharts(); renderAnalysisSummary(); }
 function updatePersonFilter() {
     const persons = [...new Set(tasks.map(t=>t.person).filter(p=>p))];
     const sel = document.getElementById('filterPerson');
     sel.innerHTML = '<option value="all">全部提需人</option>' + persons.map(p=>`<option value="${p}">${p}</option>`).join('');
 }
-function runFilter() {
-    searchKey = document.getElementById('searchInput').value;
-    filterDateStart = document.getElementById('dateStart').value;
-    filterDateEnd = document.getElementById('dateEnd').value;
-    renderTasks();
-}
+function runFilter() { searchKey = document.getElementById('searchInput').value; filterDateStart = document.getElementById('dateStart').value; filterDateEnd = document.getElementById('dateEnd').value; renderTasks(); }
 function resetFilter() {
-    document.getElementById('searchInput').value='';
-    document.getElementById('dateStart').value='';
-    document.getElementById('dateEnd').value='';
-    document.getElementById('filterCourse').value='all';
-    document.getElementById('filterType').value='all';
-    document.getElementById('filterStatus').value='all';
-    document.getElementById('filterPerson').value='all';
-    searchKey=''; filterDateStart=''; filterDateEnd='';
-    renderTasks();
+    document.getElementById('searchInput').value=''; document.getElementById('dateStart').value=''; document.getElementById('dateEnd').value='';
+    document.getElementById('filterCourse').value='all'; document.getElementById('filterType').value='all'; document.getElementById('filterStatus').value='all'; document.getElementById('filterPerson').value='all';
+    searchKey=''; filterDateStart=''; filterDateEnd=''; renderTasks();
 }
 function exportFilterData() { alert('导出功能请使用全量CSV备份'); }
 function exportWeekReport() {
@@ -439,40 +383,24 @@ function exportWeekReport() {
 }
 function exportCSV() {
     let csv = 'id,课标,级别,类别,内容,提需人,提需日期,期望时间,状态,含图片\n';
-    tasks.forEach(t => {
-        csv += `${t.id},"${t.code||''}","${t.course}","${t.type}","${t.description}","${t.person||''}","${t.date||''}","${t.expectDate||''}","${t.status}","${t.img?'是':'否'}\n`;
-    });
+    tasks.forEach(t => { csv += `${t.id},"${t.code||''}","${t.course}","${t.type}","${t.description}","${t.person||''}","${t.date||''}","${t.expectDate||''}","${t.status}","${t.img?'是':'否'}\n`; });
     const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `物料需求全量备份_${new Date().toISOString().slice(0,19)}.csv`;
-    a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `物料需求全量备份_${new Date().toISOString().slice(0,19)}.csv`; a.click();
 }
 
-// 事件绑定
 document.getElementById('filterBtn').addEventListener('click', runFilter);
 document.getElementById('resetFilterBtn').addEventListener('click', resetFilter);
 document.getElementById('exportFilterBtn').addEventListener('click', exportFilterData);
 document.getElementById('genTicketBtn').addEventListener('click', () => {
-    const course = document.getElementById('courseSeries').value;
-    const type = document.getElementById('materialType').value;
-    const code = document.getElementById('taskCode').value;
-    const desc = document.getElementById('taskDesc').value;
-    const person = document.getElementById('taskPerson').value;
+    const course = document.getElementById('courseSeries').value, type = document.getElementById('materialType').value, code = document.getElementById('taskCode').value, desc = document.getElementById('taskDesc').value, person = document.getElementById('taskPerson').value;
     const preview = `【${courseFullName[course]}】${type}：${desc}${typeSuffix[type]} | 提需人：${person||'匿名'}`;
     document.getElementById('previewTicket').innerHTML = `📝 标准化描述：<br>${escapeHtml(preview)}`;
 });
 document.getElementById('addTaskBtn').addEventListener('click', addNewTask);
 document.getElementById('exportReportBtn').addEventListener('click', exportWeekReport);
 document.getElementById('clearInputBtn').addEventListener('click', () => {
-    document.getElementById('taskCode').value='';
-    document.getElementById('taskDesc').value='';
-    document.getElementById('taskPerson').value='';
-    document.getElementById('taskDate').value='';
-    document.getElementById('taskExpectDate').value='';
-    tempBase64Img='';
-    document.getElementById('imgUpload').value='';
-    document.getElementById('imgPreview').style.display='none';
+    document.getElementById('taskCode').value=''; document.getElementById('taskDesc').value=''; document.getElementById('taskPerson').value=''; document.getElementById('taskDate').value=''; document.getElementById('taskExpectDate').value='';
+    tempBase64Img=''; document.getElementById('imgUpload').value=''; document.getElementById('imgPreview').style.display='none';
 });
 document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
 document.getElementById('openEditFromDetailBtn').addEventListener('click', () => { const id=Number(document.getElementById('detailTaskId').value); closeDetail(); openEdit(id); });
@@ -485,13 +413,9 @@ document.getElementById('exportCSVBtn').addEventListener('click', exportCSV);
 document.getElementById('uploadFile').addEventListener('click', uploadCSV);
 document.querySelectorAll('.analysis-tab').forEach(tab => tab.onclick = function() {
     document.querySelectorAll('.analysis-tab').forEach(t=>t.classList.remove('active'));
-    this.classList.add('active');
-    analysisFilterType = this.dataset.type;
-    renderCharts();
-    renderAnalysisSummary();
+    this.classList.add('active'); analysisFilterType = this.dataset.type; renderCharts(); renderAnalysisSummary();
 });
 
-// 启动
 loadTasks();
 </script>
 </body>
